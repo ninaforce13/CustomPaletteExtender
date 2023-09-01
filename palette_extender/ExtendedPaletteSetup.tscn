@@ -1,0 +1,629 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://ui/battle_theme.tres" type="Theme" id=1]
+[ext_resource path="res://battle/backgrounds/BattlePlains.tscn" type="PackedScene" id=2]
+[ext_resource path="res://tools/palette_extender/ExtendedPaletteSetup.gd" type="Script" id=3]
+[ext_resource path="res://tools/palette_extender/colorpicker.tres" type="Theme" id=4]
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0, 0, 0, 1 )
+border_color = Color( 0.137255, 0.137255, 0.137255, 1 )
+shadow_color = Color( 0, 0, 0, 1 )
+shadow_size = 5
+shadow_offset = Vector2( 5, 5 )
+
+[node name="ExtendedPaletteSetup" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 3 )
+
+[node name="ViewportContainer" type="ViewportContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+stretch = true
+
+[node name="Viewport" type="Viewport" parent="ViewportContainer"]
+size = Vector2( 1920, 1080 )
+handle_input_locally = false
+render_target_update_mode = 3
+shadow_atlas_size = 1
+
+[node name="Background" parent="ViewportContainer/Viewport" instance=ExtResource( 2 )]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Buttons" type="GridContainer" parent="VBoxContainer"]
+margin_right = 394.0
+margin_bottom = 380.0
+columns = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/Buttons"]
+margin_right = 212.0
+margin_bottom = 60.0
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 5
+text = "Monster:"
+
+[node name="MonsterButton" type="OptionButton" parent="VBoxContainer/Buttons"]
+margin_left = 216.0
+margin_right = 390.0
+margin_bottom = 60.0
+
+[node name="PopupMenu2" type="PopupMenu" parent="VBoxContainer/Buttons/MonsterButton"]
+input_pass_on_modal_close_click = false
+allow_search = true
+
+[node name="PopupMenu3" type="PopupMenu" parent="VBoxContainer/Buttons/MonsterButton"]
+input_pass_on_modal_close_click = false
+allow_search = true
+
+[node name="Label2" type="Label" parent="VBoxContainer/Buttons"]
+margin_top = 64.0
+margin_right = 212.0
+margin_bottom = 124.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 5
+text = "Fuse with:"
+
+[node name="FusionButton" type="OptionButton" parent="VBoxContainer/Buttons"]
+margin_left = 216.0
+margin_top = 64.0
+margin_right = 390.0
+margin_bottom = 124.0
+text = "(No Fusion)"
+items = [ "(No Fusion)", null, false, 0, null ]
+selected = 0
+
+[node name="PopupMenu2" type="PopupMenu" parent="VBoxContainer/Buttons/FusionButton"]
+input_pass_on_modal_close_click = false
+items = [ "(No Fusion)", null, 2, true, false, 0, 0, null, "", false ]
+allow_search = true
+
+[node name="PopupMenu3" type="PopupMenu" parent="VBoxContainer/Buttons/FusionButton"]
+input_pass_on_modal_close_click = false
+items = [ "(No Fusion)", null, 2, true, false, 0, 0, null, "", false ]
+allow_search = true
+
+[node name="Label3" type="Label" parent="VBoxContainer/Buttons"]
+margin_top = 128.0
+margin_right = 212.0
+margin_bottom = 188.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 5
+text = "Elemental Type:"
+
+[node name="CoatingButton" type="OptionButton" parent="VBoxContainer/Buttons"]
+margin_left = 216.0
+margin_top = 128.0
+margin_right = 390.0
+margin_bottom = 188.0
+text = "None"
+items = [ "None", null, false, 99, null ]
+selected = 0
+
+[node name="PopupMenu2" type="PopupMenu" parent="VBoxContainer/Buttons/CoatingButton"]
+input_pass_on_modal_close_click = false
+items = [ "None", null, 2, true, false, 99, 0, null, "", false ]
+allow_search = true
+
+[node name="PopupMenu3" type="PopupMenu" parent="VBoxContainer/Buttons/CoatingButton"]
+input_pass_on_modal_close_click = false
+items = [ "None", null, 2, true, false, 99, 0, null, "", false ]
+allow_search = true
+
+[node name="Label4" type="Label" parent="VBoxContainer/Buttons"]
+margin_top = 192.0
+margin_right = 212.0
+margin_bottom = 252.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 5
+text = "Animation:"
+
+[node name="AnimationButton" type="OptionButton" parent="VBoxContainer/Buttons"]
+margin_left = 216.0
+margin_top = 192.0
+margin_right = 390.0
+margin_bottom = 252.0
+text = "idle"
+items = [ "idle", null, false, 0, null, "alt_idle", null, false, 1, null, "windup", null, false, 2, null, "attack", null, false, 3, null, "hurt", null, false, 4, null ]
+selected = 0
+
+[node name="PopupMenu2" type="PopupMenu" parent="VBoxContainer/Buttons/AnimationButton"]
+input_pass_on_modal_close_click = false
+items = [ "idle", null, 2, true, false, 0, 0, null, "", false, "alt_idle", null, 2, false, false, 1, 0, null, "", false, "windup", null, 2, false, false, 2, 0, null, "", false, "attack", null, 2, false, false, 3, 0, null, "", false, "hurt", null, 2, false, false, 4, 0, null, "", false ]
+allow_search = true
+
+[node name="PopupMenu3" type="PopupMenu" parent="VBoxContainer/Buttons/AnimationButton"]
+input_pass_on_modal_close_click = false
+items = [ "idle", null, 2, true, false, 0, 0, null, "", false, "alt_idle", null, 2, false, false, 1, 0, null, "", false, "windup", null, 2, false, false, 2, 0, null, "", false, "attack", null, 2, false, false, 3, 0, null, "", false, "hurt", null, 2, false, false, 4, 0, null, "", false ]
+allow_search = true
+
+[node name="Label6" type="Label" parent="VBoxContainer/Buttons"]
+margin_top = 256.0
+margin_right = 212.0
+margin_bottom = 316.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 5
+text = "Background"
+
+[node name="BackgroundButton" type="OptionButton" parent="VBoxContainer/Buttons"]
+margin_left = 216.0
+margin_top = 256.0
+margin_right = 390.0
+margin_bottom = 316.0
+
+[node name="PopupMenu2" type="PopupMenu" parent="VBoxContainer/Buttons/BackgroundButton"]
+input_pass_on_modal_close_click = false
+allow_search = true
+
+[node name="PopupMenu3" type="PopupMenu" parent="VBoxContainer/Buttons/BackgroundButton"]
+input_pass_on_modal_close_click = false
+allow_search = true
+
+[node name="GlitterRegionLabel" type="Label" parent="VBoxContainer/Buttons"]
+margin_top = 320.0
+margin_right = 212.0
+margin_bottom = 380.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 5
+text = "Glitter Region"
+
+[node name="GlitterRegionOption" type="OptionButton" parent="VBoxContainer/Buttons"]
+margin_left = 216.0
+margin_top = 320.0
+margin_right = 390.0
+margin_bottom = 380.0
+
+[node name="FusionName" type="Label" parent="VBoxContainer"]
+margin_top = 384.0
+margin_right = 394.0
+margin_bottom = 444.0
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 5
+text = "(Fusion Name)"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneratePalette" type="Button" parent="VBoxContainer"]
+margin_top = 448.0
+margin_right = 394.0
+margin_bottom = 506.0
+text = "Generate Extended Palette"
+
+[node name="SaveButton" type="Button" parent="VBoxContainer"]
+margin_top = 510.0
+margin_right = 394.0
+margin_bottom = 568.0
+text = "Save Palettes"
+
+[node name="ResetPalette" type="Button" parent="VBoxContainer"]
+margin_top = 572.0
+margin_right = 394.0
+margin_bottom = 630.0
+text = "Reset Palette"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+margin_left = 1650.0
+margin_right = 1898.0
+margin_bottom = 1012.0
+
+[node name="Label7" type="Label" parent="VBoxContainer2"]
+margin_right = 248.0
+margin_bottom = 60.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 5
+text = "Palette"
+align = 1
+valign = 1
+
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer2"]
+margin_top = 64.0
+margin_right = 248.0
+margin_bottom = 950.0
+columns = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer2/GridContainer"]
+margin_right = 44.0
+margin_bottom = 886.0
+custom_constants/separation = -1
+
+[node name="ColorLabel1" type="Label" parent="VBoxContainer2/GridContainer/VBoxContainer"]
+margin_right = 44.0
+margin_bottom = 60.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 5
+text = "1:"
+align = 1
+valign = 1
+
+[node name="ColorLabel2" type="Label" parent="VBoxContainer2/GridContainer/VBoxContainer"]
+margin_top = 59.0
+margin_right = 44.0
+margin_bottom = 119.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 5
+text = "2:"
+align = 1
+valign = 1
+
+[node name="ColorLabel3" type="Label" parent="VBoxContainer2/GridContainer/VBoxContainer"]
+margin_top = 118.0
+margin_right = 44.0
+margin_bottom = 178.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 5
+text = "3:"
+align = 1
+valign = 1
+
+[node name="ColorLabel4" type="Label" parent="VBoxContainer2/GridContainer/VBoxContainer"]
+margin_top = 177.0
+margin_right = 44.0
+margin_bottom = 237.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 5
+text = "4:"
+align = 1
+valign = 1
+
+[node name="ColorLabel5" type="Label" parent="VBoxContainer2/GridContainer/VBoxContainer"]
+margin_top = 236.0
+margin_right = 44.0
+margin_bottom = 296.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 5
+text = "5:"
+align = 1
+valign = 1
+
+[node name="ColorLabel6" type="Label" parent="VBoxContainer2/GridContainer/VBoxContainer"]
+margin_top = 295.0
+margin_right = 44.0
+margin_bottom = 355.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 5
+text = "6:"
+align = 1
+valign = 1
+
+[node name="ColorLabel7" type="Label" parent="VBoxContainer2/GridContainer/VBoxContainer"]
+margin_top = 354.0
+margin_right = 44.0
+margin_bottom = 414.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 5
+text = "7:"
+align = 1
+valign = 1
+
+[node name="ColorLabel8" type="Label" parent="VBoxContainer2/GridContainer/VBoxContainer"]
+margin_top = 413.0
+margin_right = 44.0
+margin_bottom = 473.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 5
+text = "8:"
+align = 1
+valign = 1
+
+[node name="ColorLabel9" type="Label" parent="VBoxContainer2/GridContainer/VBoxContainer"]
+margin_top = 472.0
+margin_right = 44.0
+margin_bottom = 532.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 5
+text = "9:"
+align = 1
+valign = 1
+
+[node name="ColorLabel10" type="Label" parent="VBoxContainer2/GridContainer/VBoxContainer"]
+margin_top = 531.0
+margin_right = 44.0
+margin_bottom = 591.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 5
+text = "10:"
+align = 1
+valign = 1
+
+[node name="ColorLabel11" type="Label" parent="VBoxContainer2/GridContainer/VBoxContainer"]
+margin_top = 590.0
+margin_right = 44.0
+margin_bottom = 650.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 5
+text = "11:"
+align = 1
+valign = 1
+
+[node name="ColorLabel12" type="Label" parent="VBoxContainer2/GridContainer/VBoxContainer"]
+margin_top = 649.0
+margin_right = 44.0
+margin_bottom = 709.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 5
+text = "12:"
+align = 1
+valign = 1
+
+[node name="ColorLabel13" type="Label" parent="VBoxContainer2/GridContainer/VBoxContainer"]
+margin_top = 708.0
+margin_right = 44.0
+margin_bottom = 768.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 5
+text = "13:"
+align = 1
+valign = 1
+
+[node name="ColorLabel14" type="Label" parent="VBoxContainer2/GridContainer/VBoxContainer"]
+margin_top = 767.0
+margin_right = 44.0
+margin_bottom = 827.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 5
+text = "14:"
+align = 1
+valign = 1
+
+[node name="ColorLabel15" type="Label" parent="VBoxContainer2/GridContainer/VBoxContainer"]
+margin_top = 826.0
+margin_right = 44.0
+margin_bottom = 886.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 5
+text = "15:"
+align = 1
+valign = 1
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer2/GridContainer"]
+margin_left = 48.0
+margin_right = 248.0
+margin_bottom = 886.0
+rect_min_size = Vector2( 200, 0 )
+custom_constants/separation = 7
+
+[node name="Color1" type="ColorPickerButton" parent="VBoxContainer2/GridContainer/VBoxContainer2"]
+margin_right = 200.0
+margin_bottom = 52.0
+theme = ExtResource( 4 )
+custom_styles/normal = SubResource( 2 )
+edit_alpha = false
+
+[node name="Color2" type="ColorPickerButton" parent="VBoxContainer2/GridContainer/VBoxContainer2"]
+margin_top = 59.0
+margin_right = 200.0
+margin_bottom = 111.0
+theme = ExtResource( 4 )
+custom_styles/normal = SubResource( 2 )
+edit_alpha = false
+
+[node name="Color3" type="ColorPickerButton" parent="VBoxContainer2/GridContainer/VBoxContainer2"]
+margin_top = 118.0
+margin_right = 200.0
+margin_bottom = 170.0
+theme = ExtResource( 4 )
+custom_styles/normal = SubResource( 2 )
+edit_alpha = false
+
+[node name="Color4" type="ColorPickerButton" parent="VBoxContainer2/GridContainer/VBoxContainer2"]
+margin_top = 177.0
+margin_right = 200.0
+margin_bottom = 229.0
+theme = ExtResource( 4 )
+custom_styles/normal = SubResource( 2 )
+edit_alpha = false
+
+[node name="Color5" type="ColorPickerButton" parent="VBoxContainer2/GridContainer/VBoxContainer2"]
+margin_top = 236.0
+margin_right = 200.0
+margin_bottom = 288.0
+theme = ExtResource( 4 )
+custom_styles/normal = SubResource( 2 )
+edit_alpha = false
+
+[node name="Color6" type="ColorPickerButton" parent="VBoxContainer2/GridContainer/VBoxContainer2"]
+margin_top = 295.0
+margin_right = 200.0
+margin_bottom = 347.0
+theme = ExtResource( 4 )
+custom_styles/normal = SubResource( 2 )
+edit_alpha = false
+
+[node name="Color7" type="ColorPickerButton" parent="VBoxContainer2/GridContainer/VBoxContainer2"]
+margin_top = 354.0
+margin_right = 200.0
+margin_bottom = 406.0
+theme = ExtResource( 4 )
+custom_styles/normal = SubResource( 2 )
+edit_alpha = false
+
+[node name="Color8" type="ColorPickerButton" parent="VBoxContainer2/GridContainer/VBoxContainer2"]
+margin_top = 413.0
+margin_right = 200.0
+margin_bottom = 465.0
+theme = ExtResource( 4 )
+custom_styles/normal = SubResource( 2 )
+edit_alpha = false
+
+[node name="Color9" type="ColorPickerButton" parent="VBoxContainer2/GridContainer/VBoxContainer2"]
+margin_top = 472.0
+margin_right = 200.0
+margin_bottom = 524.0
+theme = ExtResource( 4 )
+custom_styles/normal = SubResource( 2 )
+edit_alpha = false
+
+[node name="Color10" type="ColorPickerButton" parent="VBoxContainer2/GridContainer/VBoxContainer2"]
+margin_top = 531.0
+margin_right = 200.0
+margin_bottom = 583.0
+theme = ExtResource( 4 )
+custom_styles/normal = SubResource( 2 )
+edit_alpha = false
+
+[node name="Color11" type="ColorPickerButton" parent="VBoxContainer2/GridContainer/VBoxContainer2"]
+margin_top = 590.0
+margin_right = 200.0
+margin_bottom = 642.0
+theme = ExtResource( 4 )
+custom_styles/normal = SubResource( 2 )
+edit_alpha = false
+
+[node name="Color12" type="ColorPickerButton" parent="VBoxContainer2/GridContainer/VBoxContainer2"]
+margin_top = 649.0
+margin_right = 200.0
+margin_bottom = 701.0
+theme = ExtResource( 4 )
+custom_styles/normal = SubResource( 2 )
+edit_alpha = false
+
+[node name="Color13" type="ColorPickerButton" parent="VBoxContainer2/GridContainer/VBoxContainer2"]
+margin_top = 708.0
+margin_right = 200.0
+margin_bottom = 760.0
+theme = ExtResource( 4 )
+custom_styles/normal = SubResource( 2 )
+edit_alpha = false
+
+[node name="Color14" type="ColorPickerButton" parent="VBoxContainer2/GridContainer/VBoxContainer2"]
+margin_top = 767.0
+margin_right = 200.0
+margin_bottom = 819.0
+theme = ExtResource( 4 )
+custom_styles/normal = SubResource( 2 )
+edit_alpha = false
+
+[node name="Color15" type="ColorPickerButton" parent="VBoxContainer2/GridContainer/VBoxContainer2"]
+margin_top = 826.0
+margin_right = 200.0
+margin_bottom = 878.0
+theme = ExtResource( 4 )
+custom_styles/normal = SubResource( 2 )
+edit_alpha = false
+
+[node name="ColorRefSheet" type="VBoxContainer" parent="."]
+margin_left = 50.0
+margin_top = 600.0
+margin_right = 350.0
+margin_bottom = 995.0
+rect_pivot_offset = Vector2( 300, 245 )
+custom_constants/separation = 15
+
+[node name="Label" type="Label" parent="ColorRefSheet"]
+margin_right = 300.0
+margin_bottom = 60.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 5
+text = "Type Color Reference"
+align = 1
+valign = 1
+autowrap = true
+
+[node name="RefColor1" type="ColorPickerButton" parent="ColorRefSheet"]
+margin_top = 75.0
+margin_right = 300.0
+margin_bottom = 127.0
+rect_pivot_offset = Vector2( 300, 0 )
+theme = ExtResource( 4 )
+custom_styles/normal = SubResource( 2 )
+edit_alpha = false
+
+[node name="RefColor2" type="ColorPickerButton" parent="ColorRefSheet"]
+margin_top = 142.0
+margin_right = 300.0
+margin_bottom = 194.0
+rect_pivot_offset = Vector2( 300, 0 )
+theme = ExtResource( 4 )
+custom_styles/normal = SubResource( 2 )
+edit_alpha = false
+
+[node name="RefColor3" type="ColorPickerButton" parent="ColorRefSheet"]
+margin_top = 209.0
+margin_right = 300.0
+margin_bottom = 261.0
+rect_pivot_offset = Vector2( 300, 0 )
+theme = ExtResource( 4 )
+custom_styles/normal = SubResource( 2 )
+edit_alpha = false
+
+[node name="RefColor4" type="ColorPickerButton" parent="ColorRefSheet"]
+margin_top = 276.0
+margin_right = 300.0
+margin_bottom = 328.0
+rect_pivot_offset = Vector2( 300, 0 )
+theme = ExtResource( 4 )
+custom_styles/normal = SubResource( 2 )
+edit_alpha = false
+
+[node name="RefColor5" type="ColorPickerButton" parent="ColorRefSheet"]
+margin_top = 343.0
+margin_right = 300.0
+margin_bottom = 395.0
+rect_pivot_offset = Vector2( 300, 0 )
+theme = ExtResource( 4 )
+custom_styles/normal = SubResource( 2 )
+edit_alpha = false
+
+[node name="ColorPickerPos" type="Control" parent="."]
+margin_left = 400.0
+margin_top = 300.0
+margin_right = 1100.0
+margin_bottom = 1000.0
+
+[node name="ColorPickerPos2" type="Control" parent="."]
+margin_left = 1200.0
+margin_top = 50.0
+margin_right = 1240.0
+margin_bottom = 90.0
+
+[connection signal="item_selected" from="VBoxContainer/Buttons/MonsterButton" to="." method="_on_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/Buttons/FusionButton" to="." method="_on_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/Buttons/CoatingButton" to="." method="_on_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/Buttons/AnimationButton" to="." method="_on_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/Buttons/BackgroundButton" to="." method="_on_BackgroundButton_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/Buttons/GlitterRegionOption" to="." method="_on_GlitterRegionOption_item_selected"]
+[connection signal="pressed" from="VBoxContainer/GeneratePalette" to="." method="_on_GeneratePalette_pressed"]
+[connection signal="pressed" from="VBoxContainer/SaveButton" to="." method="_on_SaveButton_pressed"]
+[connection signal="pressed" from="VBoxContainer/ResetPalette" to="." method="_on_ResetPalette_pressed"]
+[connection signal="color_changed" from="VBoxContainer2/GridContainer/VBoxContainer2/Color1" to="." method="_on_Color_changed" binds= [ 0 ]]
+[connection signal="pressed" from="VBoxContainer2/GridContainer/VBoxContainer2/Color1" to="." method="_on_Color_pressed" binds= [ 1 ]]
+[connection signal="color_changed" from="VBoxContainer2/GridContainer/VBoxContainer2/Color2" to="." method="_on_Color_changed" binds= [ 1 ]]
+[connection signal="pressed" from="VBoxContainer2/GridContainer/VBoxContainer2/Color2" to="." method="_on_Color_pressed" binds= [ 2 ]]
+[connection signal="color_changed" from="VBoxContainer2/GridContainer/VBoxContainer2/Color3" to="." method="_on_Color_changed" binds= [ 2 ]]
+[connection signal="pressed" from="VBoxContainer2/GridContainer/VBoxContainer2/Color3" to="." method="_on_Color_pressed" binds= [ 3 ]]
+[connection signal="color_changed" from="VBoxContainer2/GridContainer/VBoxContainer2/Color4" to="." method="_on_Color_changed" binds= [ 3 ]]
+[connection signal="pressed" from="VBoxContainer2/GridContainer/VBoxContainer2/Color4" to="." method="_on_Color_pressed" binds= [ 4 ]]
+[connection signal="color_changed" from="VBoxContainer2/GridContainer/VBoxContainer2/Color5" to="." method="_on_Color_changed" binds= [ 4 ]]
+[connection signal="pressed" from="VBoxContainer2/GridContainer/VBoxContainer2/Color5" to="." method="_on_Color_pressed" binds= [ 5 ]]
+[connection signal="color_changed" from="VBoxContainer2/GridContainer/VBoxContainer2/Color6" to="." method="_on_Color_changed" binds= [ 5 ]]
+[connection signal="pressed" from="VBoxContainer2/GridContainer/VBoxContainer2/Color6" to="." method="_on_Color_pressed" binds= [ 6 ]]
+[connection signal="color_changed" from="VBoxContainer2/GridContainer/VBoxContainer2/Color7" to="." method="_on_Color_changed" binds= [ 6 ]]
+[connection signal="pressed" from="VBoxContainer2/GridContainer/VBoxContainer2/Color7" to="." method="_on_Color_pressed" binds= [ 7 ]]
+[connection signal="color_changed" from="VBoxContainer2/GridContainer/VBoxContainer2/Color8" to="." method="_on_Color_changed" binds= [ 7 ]]
+[connection signal="pressed" from="VBoxContainer2/GridContainer/VBoxContainer2/Color8" to="." method="_on_Color_pressed" binds= [ 8 ]]
+[connection signal="color_changed" from="VBoxContainer2/GridContainer/VBoxContainer2/Color9" to="." method="_on_Color_changed" binds= [ 8 ]]
+[connection signal="pressed" from="VBoxContainer2/GridContainer/VBoxContainer2/Color9" to="." method="_on_Color_pressed" binds= [ 9 ]]
+[connection signal="color_changed" from="VBoxContainer2/GridContainer/VBoxContainer2/Color10" to="." method="_on_Color_changed" binds= [ 9 ]]
+[connection signal="pressed" from="VBoxContainer2/GridContainer/VBoxContainer2/Color10" to="." method="_on_Color_pressed" binds= [ 10 ]]
+[connection signal="color_changed" from="VBoxContainer2/GridContainer/VBoxContainer2/Color11" to="." method="_on_Color_changed" binds= [ 10 ]]
+[connection signal="pressed" from="VBoxContainer2/GridContainer/VBoxContainer2/Color11" to="." method="_on_Color_pressed" binds= [ 11 ]]
+[connection signal="color_changed" from="VBoxContainer2/GridContainer/VBoxContainer2/Color12" to="." method="_on_Color_changed" binds= [ 11 ]]
+[connection signal="pressed" from="VBoxContainer2/GridContainer/VBoxContainer2/Color12" to="." method="_on_Color_pressed" binds= [ 12 ]]
+[connection signal="color_changed" from="VBoxContainer2/GridContainer/VBoxContainer2/Color13" to="." method="_on_Color_changed" binds= [ 12 ]]
+[connection signal="pressed" from="VBoxContainer2/GridContainer/VBoxContainer2/Color13" to="." method="_on_Color_pressed" binds= [ 13 ]]
+[connection signal="color_changed" from="VBoxContainer2/GridContainer/VBoxContainer2/Color14" to="." method="_on_Color_changed" binds= [ 13 ]]
+[connection signal="pressed" from="VBoxContainer2/GridContainer/VBoxContainer2/Color14" to="." method="_on_Color_pressed" binds= [ 14 ]]
+[connection signal="color_changed" from="VBoxContainer2/GridContainer/VBoxContainer2/Color15" to="." method="_on_Color_changed" binds= [ 14 ]]
+[connection signal="pressed" from="VBoxContainer2/GridContainer/VBoxContainer2/Color15" to="." method="_on_Color_pressed" binds= [ 15 ]]
+[connection signal="pressed" from="ColorRefSheet/RefColor1" to="." method="_on_RefColor_pressed" binds= [ 1 ]]
+[connection signal="pressed" from="ColorRefSheet/RefColor2" to="." method="_on_RefColor_pressed" binds= [ 2 ]]
+[connection signal="pressed" from="ColorRefSheet/RefColor3" to="." method="_on_RefColor_pressed" binds= [ 3 ]]
+[connection signal="pressed" from="ColorRefSheet/RefColor4" to="." method="_on_RefColor_pressed" binds= [ 4 ]]
+[connection signal="pressed" from="ColorRefSheet/RefColor5" to="." method="_on_RefColor_pressed" binds= [ 5 ]]
