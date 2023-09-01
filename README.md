@@ -1,6 +1,9 @@
 # CustomPaletteExtender
 A modding tool for extending and editing the bootleg colors for monsters in Cassette Beasts
 
+# Prerequisites
+Please follow the decompile instructions in the [Mod Developer Guide](https://wiki.cassettebeasts.com/wiki/Modding:Mod_Developer_Guide) to setup your project files before proceeding with this guide.
+
 # Installation Instructions
 Download this repository and place the ```palette_extender``` folder inside your project's ```tools``` folder.
 
