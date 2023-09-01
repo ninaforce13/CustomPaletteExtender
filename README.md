@@ -4,7 +4,7 @@ A modding tool for extending and editing the bootleg colors for monsters in Cass
 # Installation Instructions
 Download this repository and place the ```palette_extender``` folder inside your project's ```tools``` folder.
 
-# How it works
+# How the tool works
 When the tool generates an extended palette for your monster, it will create a mod folder with the necessary mod files for that monster in your project. The folder is created at ```res://mods/``` and is named after the monster (i.e ```res://mods/bootleg_mod_dominoth```). 
 Note that while the tool creates a ```metadata.tres``` file for you, it does not populate any of the required fields so you will need to populate those yourself before exporting your mod. 
 
@@ -44,6 +44,12 @@ The standard exporting instructions apply here.
 3) Choose a location to save the mod file (saves as a ```.pck``` file)
    
 https://github.com/ninaforce13/CustomPaletteExtender/assets/68625676/341716f8-60db-4f2d-9104-6140c908511c
+
+# The magic behind the tool
+For anyone curious about what the generated mod actually does there's a few pieces:
+1) The ```MonsterForm_Ext.gd``` script: This is an extension script for MonsterForm that adds new fields to store custom type palettes directly on the monster instead of just taking what's on the type element. There's edits to the ```create_type_variant``` method to assign these custom palettes as the new type palette whenever the monster is asked to change colors (coatings/bootlegs). I also included the glitter_region field here to handle temporarily changing the swap_colors to accomodate a different sparkle region. This script is assigned to a copy of the monster's .tres file to leave the original data untouched.
+
+2) The ```mod_load.gd``` script: This one is an extension to ContentInfo so that I could set the ```_init()``` method to make the modded monster.tres file take over the original. Nothing really special to discuss here.
 
 
 
