@@ -25,6 +25,11 @@ When you change glitter region you may see your palette shift order, this is jus
 
 https://github.com/ninaforce13/CustomPaletteExtender/assets/68625676/df0da5c3-6180-4543-b3ad-cb01064e0478
 
+# Targeting Colors not found on the Palette
+To do this you need to find the desired color's hex value and add it to the default monster palette (this is the one you see when there is no elemental type selected). Currently only 15 colors can be on a given palette, so you will need to replace another color. It's recommended that if you choose to replace one color, that you replace all 5 colors from that region since these are designed in 3 sets of 5 colors each (these sets are colors 1-5, 6-10, 11-15). You can experiment with partial replacements, as some monster's have colors present that don't appear to be targeting anything specific.
+
+To easily find the hex value for a color found on the sprite, open the sprite's png file (found in the ```sprites/monsters/``` folder) in Aseprite/Libresprite or an image editing tool with a color picker tool. Aseprite works best for this, since opening the file there will automatically build the color palette used so you can copy from there.
+
 # Important Notes
 Before starting on a new monster, make sure you go edit the metadata for your current monster. 
 By default it appears like this:
