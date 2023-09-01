@@ -82,7 +82,7 @@ func update_selection():
 	if form.get("extended_type_palettes"):
 		generate_button.visible = false
 		save_button.visible = true
-		reset_button.visible = true
+		reset_button.visible = coating_button.get_selected_id() != 99
 		palette_container.visible = true		
 		glitter_label.visible = coating_button.get_selected_id() != 99 and ElementalTypes.table.values()[coating_button.get_selected_id()].id == "glitter"
 		glitter_region_options.visible = coating_button.get_selected_id() != 99 and ElementalTypes.table.values()[coating_button.get_selected_id()].id == "glitter"
