@@ -56,7 +56,7 @@ func _ready():
 	for type in ElementalTypes.table.values():
 		coating_button.add_item(type.name, i)
 		i += 1
-	
+	coating_button.add_item("Default", i)
 	for bg in Backgrounds:
 		background_button.add_item(Datatables.get_db_key(bg))
 	
@@ -73,7 +73,7 @@ func update_slots():
 		slots[j].clear()
 	
 	slot.translation.x = 0.0
-	
+
 	update_selection()
 
 func update_selection():
@@ -82,11 +82,15 @@ func update_selection():
 	if form.get("extended_type_palettes"):
 		generate_button.visible = false
 		save_button.visible = true
-		reset_button.visible = coating_button.get_selected_id() != 99
-		palette_container.visible = true		
-		glitter_label.visible = coating_button.get_selected_id() != 99 and ElementalTypes.table.values()[coating_button.get_selected_id()].id == "glitter"
-		glitter_region_options.visible = coating_button.get_selected_id() != 99 and ElementalTypes.table.values()[coating_button.get_selected_id()].id == "glitter"
-		color_ref_sheet.visible = coating_button.get_selected_id() != 99		
+		reset_button.visible = coating_button.get_selected_id() != 99 
+		palette_container.visible = true	
+		if coating_button.get_selected_id() == ElementalTypes.table.values().size():
+			glitter_label.visible = false
+			glitter_region_options.visible = false
+		else:
+			glitter_label.visible = coating_button.get_selected_id() != 99 and ElementalTypes.table.values()[coating_button.get_selected_id()].id == "glitter"
+			glitter_region_options.visible = coating_button.get_selected_id() != 99 and ElementalTypes.table.values()[coating_button.get_selected_id()].id == "glitter"
+		color_ref_sheet.visible = coating_button.get_selected_id() != 99 and not (coating_button.get_selected_id() == ElementalTypes.table.values().size())	
 	else:
 		generate_button.visible = true
 		save_button.visible = false
@@ -98,8 +102,13 @@ func update_selection():
 	tape.set_form(form)
 	form = tape.create_form()	
 	slot.set_form(form)
-	set_ui_palette(form.swap_colors)
-	if coating_button.get_selected_id() != 99:
+	if coating_button.get_selected_id() == ElementalTypes.table.values().size():
+		if form.default_palette.size() == 0:
+			form.default_palette = form.swap_colors.duplicate()
+		set_ui_palette(form.default_palette)
+	else:	
+		set_ui_palette(form.swap_colors)
+	if coating_button.get_selected_id() != 99 and not coating_button.get_selected_id() == ElementalTypes.table.values().size():
 		var type = ElementalTypes.table.values()[coating_button.get_selected_id()]
 		tape.type_override = []
 		tape.type_override.push_back(type)
@@ -111,11 +120,10 @@ func update_selection():
 				glitter_region_options.select(1)
 			if form.glitter_region.size() > 0 and form.glitter_region[0] == 10:
 				glitter_region_options.select(2)
-				
 			set_ui_palette(form.extended_type_palettes[type.id])
 			set_type_refsheet(type)
 		slot.set_form(form)
-		
+	
 	if fusion_button.get_selected_id() > 0:
 		var fuse_with = monster_forms[fusion_button.get_selected_id() - 1]
 		var fusion = Fusions.fuse_forms([form, fuse_with], 0)
@@ -172,7 +180,7 @@ func _on_BackgroundButton_item_selected(id):
 func duplicate_monster_data(form, original_data):	
 	form.name = original_data.name
 	form.swap_colors = original_data.swap_colors.duplicate()
-	form.default_palette = original_data.default_palette.duplicate()
+	form.default_palette = original_data.swap_colors.duplicate()
 	form.emission_palette = original_data.emission_palette.duplicate()
 	form.battle_cry = original_data.battle_cry
 	form.defeat_cry = original_data.defeat_cry
@@ -343,10 +351,15 @@ func replace_default_form(new_form):
 
 func _on_Color_changed(color, index):
 	var form = monster_forms[monster_button.get_selected_id()]
-	if coating_button.get_selected_id() != 99:
+	if coating_button.get_selected_id() != 99 and not coating_button.get_selected_id() == ElementalTypes.table.values().size():
 		var type = ElementalTypes.table.values()[coating_button.get_selected_id()]
 		form.extended_type_palettes[type.id][index] = color
 		update_selection()
+	elif coating_button.get_selected_id() == ElementalTypes.table.values().size():	
+		form.default_palette[index] = color
+		slot.set_form(null)
+		update_selection()
+		
 	else:
 		form.swap_colors[index] = color
 		update_selection()
@@ -469,8 +482,14 @@ func swap_glitter_palette(swap_region):
 
 func _on_ResetPalette_pressed():
 	if yield(MenuHelper.confirm("Are you sure you want to reset this palette?"),"completed"):
-		var form = monster_forms[monster_button.get_selected_id()]
-		var type = ElementalTypes.table.values()[coating_button.get_selected_id()]	
-		form.extended_type_palettes[type.id] = form.swap_colors.duplicate()
+		var form = monster_forms[monster_button.get_selected_id()]	
+		var type
+		if not coating_button.get_selected_id() == ElementalTypes.table.values().size():	
+			type = ElementalTypes.table.values()[coating_button.get_selected_id()]	
+			form.extended_type_palettes[type.id] = form.swap_colors.duplicate()
+		else:
+			type = "Default"
+			form.default_palette = form.swap_colors.duplicate()
+			slot.set_form(null)
 		update_selection()
-		yield (GlobalMessageDialog.show_message(Loc.tr(type.name) + " color palette reset to " + Loc.tr(form.name) + "'s current default palette."),"completed")	
+		yield (GlobalMessageDialog.show_message("Color palette reset to " + Loc.tr(form.name) + "'s current default palette."),"completed")	
