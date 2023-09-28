@@ -7,6 +7,9 @@ Please follow the decompile instructions in the [Mod Developer Guide](https://wi
 # Installation Instructions
 Download this repository and place the ```palette_extender``` folder inside your project's ```tools``` folder.
 
+# Updating The Tool
+If you need to update the tool for whatever reason, just re-download this repository and replace the files from the previous installation step. 
+
 # How the tool works
 When the tool generates an extended palette for your monster, it will create a mod folder with the necessary mod files for that monster in your project. The folder is created at ```res://mods/``` and is named after the monster (i.e ```res://mods/bootleg_mod_dominoth```). 
 Note that while the tool creates a ```metadata.tres``` file for you, it does not populate any of the required fields so you will need to populate those yourself before exporting your mod. 
