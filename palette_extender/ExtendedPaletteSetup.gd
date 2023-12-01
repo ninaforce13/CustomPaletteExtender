@@ -370,6 +370,8 @@ func _on_GeneratePalette_pressed():
 	validate_mod_folder()
 	if not has_project_info(monster_name):	
 		mod_name = yield(MenuHelper.show_text_input("Mod Name", monster_name+"_bootleg_mod", 200),"completed")
+		if mod_name == null:
+			return
 		set_project_info(monster_name)
 	messages.push_back(generate_monster_form_file()) 
 	messages.push_back(generate_extended_form())

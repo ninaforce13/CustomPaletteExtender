@@ -5,10 +5,4 @@
 [resource]
 script = ExtResource( 1 )
 project_folders = {
-"adeptile": "salamagus_family",
-"amphare": "amphare_family",
-"lapacitor": "amphare_family",
-"majortom": "major_family",
-"minortom": "major_family",
-"salamagus": "salamagus_family"
 }
