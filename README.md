@@ -23,6 +23,21 @@ Note that while the tool creates a ```metadata.tres``` file for you, it does not
 
 https://github.com/ninaforce13/CustomPaletteExtender/assets/68625676/34b1bd7b-79e9-4b3b-a434-b11f7c22de53
 
+# Combined Mod Project
+If you're working on more than one form for a single mod, you can specify the same mod folder for each new generated extension and the mod will automatically include them in the same folder and update the necessary script references.
+
+![2023-11-30_23-19-43](https://github.com/ninaforce13/CustomPaletteExtender/assets/68625676/d554fac2-636c-4d07-a5d8-41f1f2da0875)
+
+![2023-11-30_23-19-03](https://github.com/ninaforce13/CustomPaletteExtender/assets/68625676/441b3a0d-143e-45f7-8028-a6c580715968)
+
+If you have an existing project then you'll be prompted to assign a folder on your next save.
+
+# Setting up Remasters
+When working on several forms in the same monster family you would typically need to update their evolutions to point to the customized remastered form. You can automate this process by clicking the ```Set as Custom Remaster``` button. This will check each of the form files included in your mod's folder for references to the current remastered form and update the reference to use this customized version. This will prevent issues with forms remastering with original colors instead of the mod colors.
+
+![2023-11-30_23-21-56](https://github.com/ninaforce13/CustomPaletteExtender/assets/68625676/b892e602-00db-4588-98fb-8f8157718be7)
+
+
 
 # Let's Talk About Glitter
 Making edits to the glitter palette is a little different from the other types, because of the sparkle effect normally used there. The default behavior for the glitter sparkle is to apply its effect only to the first 5 colors of the palette. In order to get around this, the tool has a ```Glitter Region``` dropdown that appears when making edits to the glitter palette. By choosing a region from the dropdown, you can change where the sparkle effect will display. This is done by temporarily reorganizing the ```swap_colors``` palette to move the chosen region's colors to the top before assigning the type palette. 
@@ -30,6 +45,12 @@ Making edits to the glitter palette is a little different from the other types, 
 When you change glitter region you may see your palette shift order, this is just so the monster preview doesn't mess up the colors.
 
 https://github.com/ninaforce13/CustomPaletteExtender/assets/68625676/df0da5c3-6180-4543-b3ad-cb01064e0478
+
+# Project File Info
+Whenever you assign a form to a mod folder you will see an entry created in the tool's ```palette_info.tres``` file. This keeps track of which form belongs in which mod project.
+
+![image](https://github.com/ninaforce13/CustomPaletteExtender/assets/68625676/82557438-2160-413b-a264-dc4a730611de)
+
 
 # Targeting Colors not found on the Palette
 To do this you need to find the desired color's hex value and add it to the default monster palette (this is the one you see when there is no elemental type selected). Currently only 15 colors can be on a given palette, so you will need to replace another color. It's recommended that if you choose to replace one color, that you replace all 5 colors from that region since these are designed in 3 sets of 5 colors each (these sets are colors 1-5, 6-10, 11-15). You can experiment with partial replacements, as some monster's have colors present that don't appear to be targeting anything specific.
