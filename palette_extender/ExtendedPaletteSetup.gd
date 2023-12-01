@@ -12,6 +12,7 @@ onready var background_button = $VBoxContainer / Buttons / BackgroundButton
 onready var fusion_name_label = $VBoxContainer / FusionName
 onready var generate_button = $VBoxContainer/GeneratePalette
 onready var save_button = $VBoxContainer/SaveButton
+onready var linkevo_button = $VBoxContainer/LinkEvo
 onready var reset_button = $VBoxContainer/ResetPalette
 onready var palette_container = $VBoxContainer2
 onready var glitter_label = $VBoxContainer/Buttons/GlitterRegionLabel
@@ -39,7 +40,8 @@ onready var colorref4 = $ColorRefSheet/RefColor4
 onready var colorref5 = $ColorRefSheet/RefColor5
 onready var colorpicker_pos = $ColorPickerPos
 onready var colorpicker_pos2 = $ColorPickerPos2
-
+var mod_name = "bootleg_mod"
+var tool_info = preload("palette_info.tres")
 var monster_forms:Array = []
 var slot
 var glitter_region_memory = {}
@@ -62,8 +64,8 @@ func _ready():
 	
 	glitter_region_options.add_item("First Region")
 	glitter_region_options.add_item("Second Region")
-	glitter_region_options.add_item("Third Region")
-	
+	glitter_region_options.add_item("Third Region")	
+	mod_name = get_project_info(get_current_monster_name())
 	update_slots()
 
 func update_slots():
@@ -79,9 +81,11 @@ func update_slots():
 func update_selection():
 	var tape = MonsterTape.new()	
 	var form = monster_forms[monster_button.get_selected_id()]
+	mod_name = get_project_info(get_current_monster_name())
 	if form.get("extended_type_palettes"):
 		generate_button.visible = false
 		save_button.visible = true
+		linkevo_button.visible = true
 		reset_button.visible = coating_button.get_selected_id() != 99 
 		palette_container.visible = true	
 		if coating_button.get_selected_id() == ElementalTypes.table.values().size():
@@ -94,6 +98,7 @@ func update_selection():
 	else:
 		generate_button.visible = true
 		save_button.visible = false
+		linkevo_button.visible = false
 		reset_button.visible = false		
 		palette_container.visible = false
 		color_ref_sheet.visible = false
@@ -228,7 +233,7 @@ func generate_extended_form()->String:
 	var base_name:String = original_path.get_basename()
 	var monster_name = base_name.get_slice("/",4)	
 	var form_ext ="MonsterForm_Ext.gd"
-	var mod_path = "res://mods/bootleg_mod_"+monster_name
+	var mod_path = "res://mods/"+mod_name
 	var extended_monster_file = mod_path+"/"+monster_name+"_ext.tres"	 
 	var dir = Directory.new()
 	if not dir.dir_exists(mod_path):
@@ -262,11 +267,13 @@ func generate_monster_form_file()->String:
 	var original_path:String = form.resource_path
 	var base_name:String = original_path.get_basename()
 	var monster_name = base_name.get_slice("/",4)
-	var mod_path = "res://mods/bootleg_mod_"+monster_name
+	var mod_path = "res://mods/"+mod_name
 	var file_name ="MonsterForm_Ext.gd"    
 	var dir = Directory.new()
 	if not dir.dir_exists(mod_path):
 		create_directory(dir, mod_path)
+	if dir.file_exists(mod_path+"/"+file_name):
+		return "MonsterForm_Ext.gd already exists, no further action required."
 	if dir.open(mod_path) == OK:		
 		var source_code := """extends MonsterForm
 
@@ -279,7 +286,7 @@ func create_type_variant(types:Array)->Resource:
 	var result = duplicate()
 	result._variant_of = _get_original()
 	result.elemental_types = types
-	var new_type = types[0].duplicate()			
+	var new_type = types[0].duplicate()
 	if is_glitter_type(new_type):
 		var form_palette:Array = result.swap_colors.duplicate()
 		var index:int = 0
@@ -292,7 +299,7 @@ func create_type_variant(types:Array)->Resource:
 	return result
 
 func is_glitter_type(type)->bool:
-	return type.id == "glitter"	
+	return type.id == "glitter"
 		"""
 
 		var new_script = GDScript.new()
@@ -300,7 +307,7 @@ func is_glitter_type(type)->bool:
 		new_script.resource_path = mod_path+"/"+file_name	
 		var err = ResourceSaver.save(new_script.resource_path, new_script)
 		if err != OK:
-			return "Failed to generate MonsterForm_Ext.gd file."
+			return "Failed to generate MonsterForm_Ext.gd file. Error code: %s" % str(err)
 		
 		return "Generated " + new_script.resource_path +" ."
 	return "Failed to open mod folder path: " + mod_path +"."
@@ -310,12 +317,31 @@ func generate_mod_load_script()->String:
 	var original_path:String = form.resource_path
 	var base_name:String = original_path.get_basename()
 	var monster_name = base_name.get_slice("/",4)
-	var mod_path = "res://mods/bootleg_mod_"+monster_name
+	var mod_path = "res://mods/"+mod_name
 	var file_name ="mod_load.gd"    
 	var extended_monster_file = mod_path+"/"+monster_name+"_ext.tres" 
 	var dir = Directory.new()
 	if not dir.dir_exists(mod_path):
 		create_directory(dir, mod_path)
+	if dir.file_exists(mod_path+"/"+file_name):
+		var filepath = mod_path+"/"+file_name
+		var script:GDScript = load(filepath)
+		var code_lines:Array = script.source_code.split("\n")	
+		var line_index = code_lines.find("func _init():")
+		var variable_string = monster_name+"_resource"
+		var new_preload_code = """
+	var %s = preload("%s")
+	%s.take_over_path("%s")		
+		""" % [variable_string, extended_monster_file,variable_string,original_path ]
+		if line_index > 0:
+			code_lines.insert(line_index+1, new_preload_code)
+		script.source_code = ""
+		for line in code_lines:
+			script.source_code += line + "\n"	
+		var err = ResourceSaver.save(script.resource_path, script)
+		if err == OK:
+			var message = generate_metadata_file(script, mod_path)
+			return message + "\n" + "Regenerated " + script.resource_path +" ."
 	if dir.open(mod_path) == OK:		
 		var source_code := """extends ContentInfo
 func _init():
@@ -338,14 +364,44 @@ func create_directory(dir:Directory, folder:String):
 		push_error("Failed to create folder "+folder)
 		return false	
 
-func _on_GeneratePalette_pressed():
+func _on_GeneratePalette_pressed():	
 	var messages:Array = []
+	var monster_name = get_current_monster_name()
 	validate_mod_folder()
+	if not has_project_info(monster_name):	
+		mod_name = yield(MenuHelper.show_text_input("Mod Name", monster_name+"_bootleg_mod", 200),"completed")
+		set_project_info(monster_name)
 	messages.push_back(generate_monster_form_file()) 
 	messages.push_back(generate_extended_form())
 	messages.push_back(generate_mod_load_script())
 	update_selection()
 	yield (GlobalMessageDialog.show_message("Generation results: " + "\n" + messages[0] + "\n" + messages[1] + "\n" + messages[2] ),"completed")
+
+func get_current_monster_name()->String:
+	var form = monster_forms[monster_button.get_selected_id()]
+	var original_path:String = form.resource_path
+	var base_name:String = original_path.get_basename()
+	var monster_name = base_name.get_slice("/",4)	
+	return monster_name
+
+func get_project_info(monster_name:String)->String:
+	if has_project_info(monster_name):
+		return tool_info.project_folders[monster_name]
+	
+	return monster_name+"_bootleg_mod"	
+
+func set_project_info(monster_name:String):
+	if not tool_info:
+		return
+	if not has_project_info(monster_name):
+		tool_info.project_folders[monster_name] = mod_name
+		var result = ResourceSaver.save(tool_info.resource_path, tool_info)
+		if result == OK:
+			print("saved metadata")
+
+func has_project_info(monster_name:String)->bool:
+	return tool_info.project_folders.has(monster_name)	
+
 func replace_default_form(new_form):	
 	monster_forms[monster_button.get_selected_id()] = new_form
 
@@ -370,13 +426,16 @@ func validate_mod_folder():
 		create_directory(dir, "res://mods")	
 
 func _on_SaveButton_pressed():
-	var form = monster_forms[monster_button.get_selected_id()]
+	var form = monster_forms[monster_button.get_selected_id()]	
 	if yield(MenuHelper.confirm("Are you sure you want to save changes to "+ Loc.tr(form.name)+"'s palettes?"),"completed"):
-		var original_path:String = form.resource_path
-		var base_name:String = original_path.get_basename()
-		var monster_name = base_name.get_slice("/",4)
-		var mod_path = "res://mods/bootleg_mod_"+monster_name
+		var monster_name = get_current_monster_name()
+		if not has_project_info(monster_name):
+			yield(GlobalMessageDialog.show_message("Your existing bootleg mod does not have a project entry. Please input the name(case sensitive) of this mod's folder."),"completed")
+			mod_name = yield(MenuHelper.show_text_input("Existing Mod Name", mod_name),"completed")
+			set_project_info(monster_name)
+		var mod_path = "res://mods/"+mod_name
 		var extended_monster_file = mod_path+"/"+monster_name+"_ext.tres"
+
 		var result = ResourceSaver.save(extended_monster_file, form)
 		if result == OK:
 			yield (GlobalMessageDialog.show_message("Saved all color palettes for " + Loc.tr(form.name)+"."),"completed")	
@@ -493,3 +552,29 @@ func _on_ResetPalette_pressed():
 			slot.set_form(null)
 		update_selection()
 		yield (GlobalMessageDialog.show_message("Color palette reset to " + Loc.tr(form.name) + "'s current default palette."),"completed")	
+
+
+func _on_LinkEvo_pressed():
+	if not has_project_info(get_current_monster_name()):
+		yield(GlobalMessageDialog.show_message("Your existing bootleg mod does not have a project entry. Please input the name(case sensitive) of this mod's folder."),"completed")
+		mod_name = yield(MenuHelper.show_text_input("Existing Mod Name", mod_name),"completed")
+		set_project_info(get_current_monster_name())		
+	if yield(MenuHelper.confirm("Forms related to %s found in the %s folder will update to use this as their Remaster. Continue?"%[get_current_monster_name(),mod_name]),"completed"):
+		var mod_path = "res://mods/"
+		var mod_files = Datatables.load(mod_path+mod_name).table
+		var selected_form = monster_forms[monster_button.get_selected_id()]
+		var extended_monster_file = mod_path+"/"+mod_name+"/"+get_current_monster_name()+"_ext.tres"
+		var message:String = "Changed files: \n"
+		for file in mod_files.values():
+			if file is MonsterForm:
+				for evo in file.evolutions:
+					if evo.evolved_form.name == selected_form.name:
+						evo.evolved_form = load(extended_monster_file)
+						var err = ResourceSaver.save(file.resource_path, file)
+						if err == OK:
+							message += "Updated %s \n"%file.resource_path 
+							break
+		yield(GlobalMessageDialog.show_message(message),"completed")
+			
+	
+	

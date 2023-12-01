@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://tools/palette_extender/palette_tool_info.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+project_folders = {
+"adeptile": "salamagus_family",
+"amphare": "amphare_family",
+"lapacitor": "amphare_family",
+"majortom": "major_family",
+"minortom": "major_family",
+"salamagus": "salamagus_family"
+}

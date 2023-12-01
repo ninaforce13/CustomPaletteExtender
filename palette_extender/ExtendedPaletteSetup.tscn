@@ -196,16 +196,22 @@ margin_right = 394.0
 margin_bottom = 506.0
 text = "Generate Extended Palette"
 
-[node name="SaveButton" type="Button" parent="VBoxContainer"]
+[node name="LinkEvo" type="Button" parent="VBoxContainer"]
 margin_top = 510.0
 margin_right = 394.0
 margin_bottom = 568.0
-text = "Save Palettes"
+text = "Set as Custom Remaster"
 
-[node name="ResetPalette" type="Button" parent="VBoxContainer"]
+[node name="SaveButton" type="Button" parent="VBoxContainer"]
 margin_top = 572.0
 margin_right = 394.0
 margin_bottom = 630.0
+text = "Save Palettes"
+
+[node name="ResetPalette" type="Button" parent="VBoxContainer"]
+margin_top = 634.0
+margin_right = 394.0
+margin_bottom = 692.0
 text = "Reset Palette"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="."]
@@ -509,10 +515,10 @@ custom_styles/normal = SubResource( 2 )
 edit_alpha = false
 
 [node name="ColorRefSheet" type="VBoxContainer" parent="."]
-margin_left = 50.0
-margin_top = 600.0
-margin_right = 350.0
-margin_bottom = 995.0
+margin_left = 42.0
+margin_top = 673.0
+margin_right = 342.0
+margin_bottom = 1068.0
 rect_pivot_offset = Vector2( 300, 245 )
 custom_constants/separation = 15
 
@@ -590,6 +596,7 @@ margin_bottom = 90.0
 [connection signal="item_selected" from="VBoxContainer/Buttons/BackgroundButton" to="." method="_on_BackgroundButton_item_selected"]
 [connection signal="item_selected" from="VBoxContainer/Buttons/GlitterRegionOption" to="." method="_on_GlitterRegionOption_item_selected"]
 [connection signal="pressed" from="VBoxContainer/GeneratePalette" to="." method="_on_GeneratePalette_pressed"]
+[connection signal="pressed" from="VBoxContainer/LinkEvo" to="." method="_on_LinkEvo_pressed"]
 [connection signal="pressed" from="VBoxContainer/SaveButton" to="." method="_on_SaveButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/ResetPalette" to="." method="_on_ResetPalette_pressed"]
 [connection signal="color_changed" from="VBoxContainer2/GridContainer/VBoxContainer2/Color1" to="." method="_on_Color_changed" binds= [ 0 ]]
